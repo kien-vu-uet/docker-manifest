@@ -1,0 +1,21 @@
+services:
+  alloy-instrument:
+    image: grafana/alloy:v1.7.5
+    # container_name: alloy-instrument
+    volumes:
+      - ../config/alloy-conf.d/config.alloy:/etc/alloy/config.alloy
+      - /var/run/docker.sock:/var/run/docker.sock
+    pid: host
+    privileged: true
+    command: run --server.http.listen-addr=0.0.0.0:12346 /etc/alloy/config.alloy
+    environment:
+      HOSTNAME: ${HOSTNAME}
+      TEMPO_URL: tempo.internal.taureau.ai:443
+      LOKI_URL: https://loki.internal.taureau.ai/loki/api/v1/push
+      MIMIR_URL: https://mimir.internal.taureau.ai/api/v1/push
+    ports:
+      - 4317:4317
+      - 12346:12346
+    restart: unless-stopped
+    networks:
+      - ai_service

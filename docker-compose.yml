@@ -1,0 +1,22 @@
+version: 'Taureau.ai@2025'
+
+include:
+  - compose/docker-compose.minio.yml
+  - compose/docker-compose.mysql.yml
+  # - compose/docker-compose.postgres.yml
+  - compose/docker-compose.neo4j.yml
+  - compose/docker-compose.qdrant.yml
+  - compose/docker-compose.redis.yml
+  - compose/docker-compose.portainer.yml
+  # - compose/docker-compose.alloy.yml
+  - compose/docker-compose.mcp.yml
+  # - compose/docker-compose.crawl4ai.yml
+  # - compose/docker-compose.gitdiagram.yml
+
+networks:
+  ai_service:
+    name: ai_common_services_network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.22.0/24

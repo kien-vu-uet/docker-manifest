@@ -1,0 +1,73 @@
+{
+  // Browser configuration
+  browser?: {
+    // Browser type to use (chromium, firefox, or webkit)
+    browserName?: 'chromium' | 'firefox' | 'webkit';
+
+    // Keep the browser profile in memory, do not save it to disk.
+    isolated?: boolean;
+
+    // Path to user data directory for browser profile persistence
+    userDataDir?: string;
+
+    // Browser launch options (see Playwright docs)
+    // @see https://playwright.dev/docs/api/class-browsertype#browser-type-launch
+    launchOptions?: {
+      channel?: string;        // Browser channel (e.g. 'chrome')
+      headless?: boolean;      // Run in headless mode
+      executablePath?: string; // Path to browser executable
+      // ... other Playwright launch options
+    };
+
+    // Browser context options
+    // @see https://playwright.dev/docs/api/class-browser#browser-new-context
+    contextOptions?: {
+      viewport?: { width: number, height: number };
+      // ... other Playwright context options
+    };
+
+    // CDP endpoint for connecting to existing browser
+    cdpEndpoint?: string;
+
+    // Remote Playwright server endpoint
+    remoteEndpoint?: string;
+  },
+
+  // Server configuration
+  server?: {
+    port?: number;  // Port to listen on
+    host?: string;  // Host to bind to (default: localhost)
+  },
+
+  // List of enabled capabilities
+  capabilities?: Array<
+    'core' |    // Core browser automation
+    'tabs' |    // Tab management
+    'pdf' |     // PDF generation
+    'history' | // Browser history
+    'wait' |    // Wait utilities
+    'files' |   // File handling
+    'install' | // Browser installation
+    'testing'   // Testing
+  >;
+
+  // Enable vision mode (screenshots instead of accessibility snapshots)
+  vision?: boolean;
+
+  // Directory for output files
+  outputDir?: string;
+
+  // Network configuration
+  network?: {
+    // List of origins to allow the browser to request. Default is to allow all. Origins matching both `allowedOrigins` and `blockedOrigins` will be blocked.
+    allowedOrigins?: string[];
+
+    // List of origins to block the browser to request. Origins matching both `allowedOrigins` and `blockedOrigins` will be blocked.
+    blockedOrigins?: string[];
+  };
+ 
+  /**
+   * Do not send image responses to the client.
+   */
+  noImageResponses?: boolean;
+}

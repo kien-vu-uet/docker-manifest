@@ -1,0 +1,14 @@
+services:
+  gitdiagram:
+    build: 
+      context: /home/kienvt/Workspace/GitDiagram/backend
+      dockerfile: Dockerfile
+    ports:
+      - "8564:8000"
+    volumes:
+      - /home/kienvt/Workspace/GitDiagram/backend:/app
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+    restart: unless-stopped
+    networks:
+      - ai_service

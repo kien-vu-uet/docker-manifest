@@ -1,0 +1,46 @@
+services:
+
+  portainer-agent:
+    image: portainer/agent
+    ports:
+      - "9011:9001" 
+    volumes:
+      # Mount the host's Docker socket into the container
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Mount the host's Docker volumes into the container
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    depends_on:
+      - portainer
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1024M
+      restart_policy:
+        condition: unless-stopped
+        delay: 5s
+        window: 120s
+    restart: always
+    networks:
+      - ai_service
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    ports:
+      - "8000:8000"
+      - "9443:9443"
+    volumes:
+      # Create a named volume for persistent Portainer data storage
+      - ../storage/portainer_data:/data
+    restart: always
+    networks:
+      - ai_service
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1024M
+      restart_policy:
+        condition: unless-stopped
+        delay: 5s
+        window: 120s

@@ -1,0 +1,24 @@
+services:
+  mysql_db:
+    image: mysql:8.0.37
+    command:
+      - --authentication_policy=mysql_native_password
+      - --log-bin-trust-function-creators=ON
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_USER: ${ACCESS_KEY?Variable ACCESS_KEY not set}
+      MYSQL_PASSWORD: ${SECRET_KEY?Variable SECRET_KEY not set}
+      MYSQL_ROOT_PASSWORD: ${SECRET_KEY?Variable SECRET_KEY not set}
+      MYSQL_DATABASE: ${DEFAULT_DB?Variable DEFAULT_DB not set}
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 10
+    restart: always
+    volumes:
+      - ../storage/mysql_data:/var/lib/mysql_data
+    networks:
+      - ai_service

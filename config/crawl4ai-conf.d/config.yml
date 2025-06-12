@@ -1,0 +1,70 @@
+# Application Configuration
+app:
+  title: "Crawl4AI API"         # Server title in OpenAPI docs
+  version: "Taureau@2025"       # API version
+  host: "0.0.0.0"               # Listen on all interfaces
+  port: 8000                    # Server port
+  reload: False                 # Enable hot reloading (development only)
+  timeout_keep_alive: 300       # Keep-alive timeout in seconds
+
+# Default LLM Configuration
+llm:
+  provider: "openai/gpt-4o-mini"
+  api_key_env: "OPENAI_API_KEY"
+  # api_key: sk-...  # If you pass the API key directly then api_key_env will be ignored
+
+# Rate Limiting Configuration
+rate_limiting:
+  enabled: True                 # Enable/disable rate limiting
+  default_limit: "1000/minute"   # Rate limit format: "number/timeunit"
+  trusted_proxies: []           # List of trusted proxy IPs
+  storage_uri: "memory://"      # Use "redis://localhost:6379" for production
+
+redis:
+  host: "localhost"
+  port: 6379
+  db: 0
+  password: ${SECRET_KEY:-}     # Redis password (optional)
+  ssl: False
+  ssl_cert_reqs: None
+  ssl_ca_certs: None
+  ssl_certfile: None
+  ssl_keyfile: None
+  ssl_cert_reqs: None
+  ssl_ca_certs: None
+  ssl_certfile: None
+  ssl_keyfile: None
+
+# Security Configuration
+security:
+  enabled: false               # Master toggle for security features
+  jwt_enabled: true            # Enable JWT authentication
+  https_redirect: True         # Force HTTPS
+  trusted_hosts: ["*"]         # Allowed hosts (use specific domains in production)
+  headers:                     # Security headers
+    x_content_type_options: "nosniff"
+    x_frame_options: "DENY"
+    content_security_policy: "default-src 'self'"
+    strict_transport_security: "max-age=63072000; includeSubDomains"
+
+# Crawler Configuration
+crawler:
+  memory_threshold_percent: 95.0  # Memory usage threshold
+  rate_limiter:
+    base_delay: [1.0, 2.0]      # Min and max delay between requests
+  timeouts:
+    stream_init: 30.0           # Stream initialization timeout
+    batch_process: 300.0        # Batch processing timeout
+
+# Logging Configuration
+logging:
+  level: "DEBUG"                 # Log level (DEBUG, INFO, WARNING, ERROR)
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+# Observability Configuration
+observability:
+  prometheus:
+    enabled: True              # Enable Prometheus metrics
+    endpoint: "/metrics"       # Metrics endpoint
+  health_check:
+    endpoint: "/health"        # Health check endpoint

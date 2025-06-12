@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: ${ACCESS_KEY?Variable ACCESS_KEY not set}
+      POSTGRES_PASSWORD: ${SECRET_KEY?Variable SECRET_KEY not set}
+      POSTGRES_DB: ${DEFAULT_PG_DB?Variable DEFAULT_PG_DB not set}
+    volumes:
+      - ../storage/postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 5s
+      retries: 5
+    restart: always
+    networks:
+      - ai_service
+    restart: always
+    ports:
+      - "5432:5432"

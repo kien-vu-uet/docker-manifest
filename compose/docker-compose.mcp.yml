@@ -1,0 +1,39 @@
+services:
+  # github-mcp-server:
+  #   image: ghcr.io/github/github-mcp-server
+  #   environment:
+  #     GITHUB_PERSONAL_ACCESS_TOKEN: ${GITHUB_PERSONAL_ACCESS_TOKEN?Variable GITHUB_PERSONAL_ACCESS_TOKEN not set}
+  #   stdin_open: true
+  #   tty: true
+  #   networks:
+  #     - ai_service
+
+  # ppl-mcp-server:
+  #   image: mcp/perplexity-ask
+  #   stdin_open: true
+  #   tty: true
+  #   environment:
+  #     PERPLEXITY_API_KEY: ${PERPLEXITY_API_KEY?Variable PERPLEXITY_API_KEY not set}
+  #   networks:
+  #     - ai_service
+
+  playwright-mcp-server:
+    image: mcr.microsoft.com/playwright/mcp
+    stdin_open: true
+    tty: true
+    init: true
+    pull_policy: always
+    ports:
+      - "9009:9009"
+    volumes:
+      - ../storage/playwright_data:/var/lib/playwright
+    command:
+      - "--host=0.0.0.0"
+      - "--port=9009"
+      - "--vision"
+      - "--storage-state=/var/lib/playwright/storage-state.json"
+      - "--output-dir=/var/lib/playwright/output"
+    restart: always
+    networks:
+      - ai_service
+  

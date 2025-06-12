@@ -1,0 +1,39 @@
+livedebugging {
+ enabled = true
+}
+
+otelcol.receiver.otlp "default" {
+  grpc {}
+
+  output {
+    traces = [otelcol.exporter.otlp.default.input]
+    logs = [otelcol.exporter.loki.default.input]
+    metrics = [otelcol.exporter.prometheus.default.input]
+  }
+}
+
+otelcol.exporter.otlp "default" {
+  client {
+    endpoint = env("TEMPO_URL")
+  }
+}
+
+otelcol.exporter.loki "default" {
+  forward_to = [loki.write.default.receiver]
+}
+
+loki.write "default" {
+  endpoint {
+    url = env("LOKI_URL")
+  }
+}
+
+otelcol.exporter.prometheus "default" {
+  forward_to = [prometheus.remote_write.default.receiver]
+}
+
+prometheus.remote_write "default" {
+  endpoint {
+    url = env("MIMIR_URL")
+  }
+}
