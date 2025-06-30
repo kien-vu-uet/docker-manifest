@@ -12,3 +12,4 @@ services:
     command: server --console-address ":9001" /data
     networks:
       - ai_service
+    restart: always
