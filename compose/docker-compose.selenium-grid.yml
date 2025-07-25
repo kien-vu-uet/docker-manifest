@@ -1,0 +1,12 @@
+services:
+  selenium-grid:
+    image: selenium/standalone-chrome:125.0-20250515
+    shm_size: 2g # Needed for headless Chrome
+    environment:
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+      - SE_NODE_MAX_SESSIONS=4
+    networks:
+      - ai_service
+    restart: unless-stopped
+    ports:
+      - "4567:4444"

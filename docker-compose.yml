@@ -12,11 +12,8 @@ include:
   - compose/docker-compose.mcp.yml
   # - compose/docker-compose.crawl4ai.yml
   # - compose/docker-compose.gitdiagram.yml
+  - compose/docker-compose.selenium-grid.yml
 
 networks:
   ai_service:
     name: ai_common_services_network
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 192.168.22.0/24
